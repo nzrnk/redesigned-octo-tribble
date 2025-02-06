@@ -1,11 +1,8 @@
-import { johnDoe } from "../data/registeredUser";
-
 export class NewArticlePage {
-
     constructor(page) {
         this.page = page;
 
-        this.articleAuthor = page.getByRole('link', { name : `${johnDoe.name}`}).nth(3);
+        this.articleAuthor = page.locator('.author').nth(1);
         this.articleTitle = page.getByRole('heading');
         this.articleBody = page.getByRole('paragraph');
         
@@ -16,8 +13,8 @@ export class NewArticlePage {
         this.homeButton = page.getByRole('link', { name : 'Home'});
     
     }
-
-    async postComment (text) {
+    
+    async postComment(text) {
         await this.newCommentFiled.click();
         await this.newCommentFiled.fill(text);
         await this.postCommentButton.click();

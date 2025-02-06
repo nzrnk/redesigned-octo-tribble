@@ -9,8 +9,7 @@ export class ArticleEditorPage {
         this.publishArticleButton = page.getByRole('button', { name : 'Publish Article' });
     }
 
-
-    async createNewArticle (title, theme, body, tag) {
+    async createNewArticle(title, theme, body) {
         
         await this.articleTitleField.click();
         await this.articleTitleField.fill(title);

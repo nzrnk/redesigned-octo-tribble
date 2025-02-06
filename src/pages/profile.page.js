@@ -5,8 +5,8 @@ export class ProfilePage {
         this.article = page.getByRole('heading').nth(1);
     }
         
-        async goToArticle () {
-            await this.article.waitFor({ state : 'attached'});
-            await this.article.click();
-        }
+    async goToArticle () {
+        await this.article.waitFor({ state : 'attached'});
+        await this.article.click();
+    }
 };
