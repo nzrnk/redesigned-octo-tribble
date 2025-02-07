@@ -9,12 +9,12 @@ export class ArticleEditorPage {
         this.publishArticleButton = page.getByRole('button', { name : 'Publish Article' });
     }
 
-    async createNewArticle(title, theme, body) {
+    async createNewArticle({title, topic, body}) {
         
         await this.articleTitleField.click();
         await this.articleTitleField.fill(title);
         await this.articleThemeField.click();
-        await this.articleThemeField.fill(theme);
+        await this.articleThemeField.fill(topic);
         await this.articleBodyFiled.click();
         await this.articleBodyFiled.fill(body);
         await this.publishArticleButton.click();

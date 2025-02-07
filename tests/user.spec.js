@@ -1,12 +1,7 @@
 import { test , expect } from '@playwright/test';
-import { MainPage } from '../src/pages/main.page';
-import { LoginPage } from '../src/pages/login.page';
-import { AuthMainPage } from '../src/pages/authMain.page';
-import { SettingsPage } from '../src/pages/settings.page';
-import { PROD_URL } from '../src/data/url';
-import { newPass } from '../src/data/newPassword';
-import { SignUpPage } from '../src/pages/signUp.page';
-import { NewUser } from '../src/data/newUser';
+import { MainPage, LoginPage, AuthMainPage, SettingsPage, SignUpPage } from '../src/pages';
+import { NewUser, PROD_URL } from '../src/data';
+import { UserProfile } from '../src/builder';
 
 
 test.describe('Профиль пользователя', () => {
@@ -20,7 +15,7 @@ test.describe('Профиль пользователя', () => {
         await signUpPage.signUp({
             username: newUser.name,
             email: newUser.email,
-            password: newUser.password
+            password: newUser.password,
         });
     });
     
@@ -30,14 +25,20 @@ test.describe('Профиль пользователя', () => {
         const loginPage = new LoginPage(page);
         const authMainPage = new AuthMainPage(page);
         const settingsPage = new SettingsPage(page);
+        const userProfile = new UserProfile()
+        .setPassword()
+        .builder();
         const currentUserData = settingsPage.getCurrentUserData(); 
 
         await authMainPage.getCurrentUserData()
         await authMainPage.goToSettings();
-        await settingsPage.changePassword(newPass); 
+        await settingsPage.changePassword(userProfile.password); 
         await authMainPage.goToLogout();
         await mainPage.goToLogin();
-        await loginPage.login((await currentUserData).currentLogin, newPass);
+        await loginPage.login({
+            login: (await currentUserData).currentLogin, 
+            password: userProfile.password
+        });
         await expect(authMainPage.header).toBeVisible();
         await expect(authMainPage.header).toContainText(`${(await currentUserData).currentLogin}`);
         

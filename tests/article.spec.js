@@ -1,14 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../src/pages/main.page';
-import { NewUser } from '../src/data/newUser';
-import { AuthMainPage } from '../src/pages/authMain.page';
-import { ArticleEditorPage } from '../src/pages/articleEditor.page';
-import { NewArticle } from '../src/data/newArticle';
-import { NewArticlePage } from '../src/pages/newArticle.page';
-import { PROD_URL } from '../src/data/url';
-import { ProfilePage } from '../src/pages/profile.page';
-import { newComment } from '../src/data/newComment';
-import { SignUpPage } from '../src/pages/signUp.page';
+import { MainPage, AuthMainPage, ArticleEditorPage, NewArticlePage, ProfilePage, SignUpPage } from '../src/pages';
+import { PROD_URL, NewUser, newComment } from '../src/data';
+import { NewArticle } from '../src/builder';
 
 
 test.describe('Создание и редактирование статей', () => {
@@ -31,22 +24,22 @@ test.describe('Создание и редактирование статей', (
         const authMainPage = new AuthMainPage(page);
         const articleEditorPage = new ArticleEditorPage(page);
         const newArticlePage = new NewArticlePage(page);
-        const newArticle = new NewArticle;
-        const currenUserName = authMainPage.getCurrentUserData(); 
+        const newArticle = new NewArticle();
+        const currenUserName = authMainPage.getCurrentUserData();
         
-        const title = newArticle.getArticleTitle();
-        const theme = newArticle.getArticleTheme();
-        const body = newArticle.getArticleBody();
-
-
+        
         await authMainPage.goToArticleEditor();
-        await articleEditorPage.createNewArticle(title, theme, body);
+        await articleEditorPage.createNewArticle({
+            title: newArticle.title,
+            topic: newArticle.topic,
+            body: newArticle.body,
+        });
         await expect(newArticlePage.articleAuthor).toBeVisible();
         await expect(newArticlePage.articleAuthor).toContainText(`${(await currenUserName).currenName}`);
         await expect(newArticlePage.articleTitle).toBeVisible();
-        await expect(newArticlePage.articleTitle).toContainText(title);
+        await expect(newArticlePage.articleTitle).toContainText(newArticle.title);
         await expect(newArticlePage.articleBody).toBeVisible();
-        await expect(newArticlePage.articleBody).toContainText(body);
+        await expect(newArticlePage.articleBody).toContainText(newArticle.body);
     });
         
     test.describe('Подготовка статьи к тесту создания комментария', () => {
@@ -54,14 +47,14 @@ test.describe('Создание и редактирование статей', (
             const authMainPage = new AuthMainPage(page);
             const articleEditorPage = new ArticleEditorPage(page);
             const newArticlePage = new NewArticlePage(page);
-            const newArticle = new NewArticle;
+            const newArticle = new NewArticle();
     
-            const title = newArticle.getArticleTitle();
-            const theme = newArticle.getArticleTheme();
-            const body = newArticle.getArticleBody();
-
             await authMainPage.goToArticleEditor();
-            await articleEditorPage.createNewArticle(title, theme, body);
+            await articleEditorPage.createNewArticle({
+                title: newArticle.title,
+                topic: newArticle.topic,
+                body: newArticle.body,
+            });
             await newArticlePage.articleBody.waitFor({ state : 'attached' });
         });
    
