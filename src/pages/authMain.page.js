@@ -11,12 +11,7 @@ export class AuthMainPage {
         this.newArticleButton = page.getByRole('link', { name : 'New Article'});
     }
 
-    async getCurrentUserData() {
-        return {
-            currenName: await this.headerDropDowm.innerText()
-        }
-    }
-    
+   
     async goToProfile() {
         await this.headerDropDowm.click();
         await this.profileLink.click();

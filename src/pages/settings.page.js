@@ -2,6 +2,7 @@ export class SettingsPage {
     constructor(page) {
         this.page = page;
 
+        this.nameField = page.getByRole('textbox', { name: 'Your Name' });
         this.passwordField = page.getByRole('textbox', { name: 'Password' });
         this.emailField = page.getByRole('textbox', { name: 'Email' });
 
@@ -10,7 +11,8 @@ export class SettingsPage {
 
     async getCurrentUserData() {
         return {
-            currentLogin: await this.emailField.innerText(),
+            currentName: await this.nameField.inputValue(),
+            currentLogin: await this.emailField.inputValue(),
         }
     }
 

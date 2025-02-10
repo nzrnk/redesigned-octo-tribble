@@ -29,8 +29,8 @@ test.describe('Профиль пользователя', () => {
         .setPassword()
         .builder();
         const currentUserData = settingsPage.getCurrentUserData(); 
-
-        await authMainPage.getCurrentUserData()
+        
+        
         await authMainPage.goToSettings();
         await settingsPage.changePassword(userProfile.password); 
         await authMainPage.goToLogout();
@@ -40,7 +40,7 @@ test.describe('Профиль пользователя', () => {
             password: userProfile.password
         });
         await expect(authMainPage.header).toBeVisible();
-        await expect(authMainPage.header).toContainText(`${(await currentUserData).currentLogin}`);
+        await expect(authMainPage.header).toContainText(`${(await currentUserData).currentName}`);
         
     });
 });
